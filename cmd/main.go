@@ -11,5 +11,11 @@ func main() {
 	if err != nil {
 		log.Println(err.Error())
 	}
-	fmt.Printf("u1: %+v", u1)
+	fmt.Printf("u1: %+v\n", u1)
+
+	u2, err := user.NewUser("eml@nothing", "Dookiepants")
+	if err != nil {
+		log.Println(err.Error())
+	}
+	fmt.Printf("u2: %+v\n", u2)
 }

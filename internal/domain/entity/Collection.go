@@ -2,8 +2,8 @@ package entity
 
 import "newser/internal/domain/value"
 
-type CollectionId = value.ID
+type SetId = value.ID
 
-type Collection struct {
-	ID CollectionId
+type Set struct {
+	ID SetId
 }

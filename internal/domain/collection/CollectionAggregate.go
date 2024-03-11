@@ -4,8 +4,8 @@ import (
 	"newser/internal/domain/entity"
 )
 
-type CollectionAggregate struct {
-	collection entity.Collection
+type Collection struct {
+	collection entity.Set
 	user       entity.PersonId
 	items      []entity.ItemId
 }

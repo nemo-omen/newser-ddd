@@ -12,7 +12,7 @@ type User struct {
 	user          *entity.Person
 	subscriptions []entity.SubscriptionId
 	annotations   []entity.NoteId
-	collections   []entity.CollectionId
+	collections   []entity.SetId
 }
 
 func NewUser(email, name string) (*User, error) {
@@ -42,7 +42,7 @@ func NewUser(email, name string) (*User, error) {
 		user:          person,
 		subscriptions: []entity.SubscriptionId{},
 		annotations:   []entity.NoteId{},
-		collections:   []entity.CollectionId{},
+		collections:   []entity.SetId{},
 	}
 	return &user, nil
 }
@@ -54,7 +54,7 @@ func (u *User) String() string {
 		Email         value.Email             `json:"email"`
 		Subscriptions []entity.SubscriptionId `json:"subscriptions"`
 		Annotations   []entity.NoteId         `json:"annotations"`
-		Collections   []entity.CollectionId   `json:"collections"`
+		Collections   []entity.SetId          `json:"collections"`
 	}
 	ju := jsonUser{
 		ID:            u.user.ID,
