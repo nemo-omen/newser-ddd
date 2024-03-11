@@ -2,9 +2,7 @@ package user
 
 import (
 	"encoding/json"
-	"errors"
 	"newser/internal/domain/entity"
-	domainerror "newser/internal/domain/error"
 	"newser/internal/domain/value"
 )
 
@@ -18,18 +16,12 @@ type User struct {
 func NewUser(email, name string) (*User, error) {
 	userName, err := value.NewName(name)
 	if err != nil {
-		return nil, domainerror.NewError(
-			err,
-			errors.New("invalid username"),
-		)
+		return nil, err
 	}
 
 	userEmail, err := value.NewEmail(email)
 	if err != nil {
-		return nil, domainerror.NewError(
-			err,
-			errors.New("invalid email address"),
-		)
+		return nil, err
 	}
 
 	person := &entity.Person{

@@ -10,12 +10,7 @@ type Email = string
 func NewEmail(address string) (string, error) {
 	email, err := mail.ParseAddress(address)
 	if err != nil {
-		error := domainerror.NewError(
-			domainerror.ErrInvalidValue,
-			err,
-		)
-
-		return "", error
+		return "", domainerror.ErrInvalidValue
 	}
 
 	return email.Address, nil
