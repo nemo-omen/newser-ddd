@@ -4,10 +4,8 @@ import (
 	"newser/internal/domain/value"
 )
 
-type PersonId = value.ID
-
 type Person struct {
-	ID    PersonId
+	ID    value.ID
 	Name  string
 	Email string
 }

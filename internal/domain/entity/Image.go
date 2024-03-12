@@ -4,10 +4,8 @@ import (
 	"newser/internal/domain/value"
 )
 
-type ImageId = value.ID
-
 type Image struct {
-	ID    ImageId
+	ID    value.ID
 	Title string
 	URL   string
 }

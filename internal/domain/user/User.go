@@ -39,7 +39,7 @@ func NewUser(email, name string) (*User, error) {
 	return &user, nil
 }
 
-func (u *User) String() string {
+func (u *User) JSON() []byte {
 	type jsonUser struct {
 		ID            value.ID                `json:"id"`
 		Name          value.Name              `json:"name"`
@@ -57,5 +57,10 @@ func (u *User) String() string {
 		Collections:   u.collections,
 	}
 	b, _ := json.MarshalIndent(ju, "", "  ")
-	return string(b)
+	return b
+}
+
+func (u *User) String() string {
+	j := u.JSON()
+	return string(j)
 }
