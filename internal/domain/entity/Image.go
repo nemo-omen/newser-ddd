@@ -5,7 +5,7 @@ import (
 )
 
 type Image struct {
-	ID    value.ID
+	ID    value.ImageId
 	Title string
 	URL   string
 }

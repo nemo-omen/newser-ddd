@@ -2,11 +2,12 @@ package subscription
 
 import (
 	"newser/internal/domain/entity"
+	"newser/internal/domain/value"
 )
 
 type UserSubscription struct {
 	subscription *entity.Subscription
-	user         entity.PersonId
-	feed         entity.FeedId
+	user         value.PersonId
+	feed         value.NewsfeedId
 	// created ?
 }

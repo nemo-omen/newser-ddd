@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"newser/internal/domain/value"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Article struct {
-	id              value.ID
+	id              value.ArticleId
 	title           value.Title
 	description     value.Description
 	content         value.ItemContent
@@ -18,11 +20,11 @@ type Article struct {
 	published       string
 	publishedParsed time.Time
 	guid            string
-	authors         []value.ID
-	image           value.ID
-	annotations     []value.ID
-	categories      []value.ID
-	feed            value.ID
+	authors         []value.PersonId
+	image           value.ImageId
+	annotations     []value.AnnotationId
+	categories      []value.CategoryId
+	feed            value.NewsfeedId
 	slug            string
 	read            bool
 	saved           bool
@@ -44,27 +46,70 @@ type ArticleProps struct {
 }
 
 func NewArticle(props ArticleProps) (*Article, error) {
+	valFeedId, err := value.IdFromString(props.FeedId)
+	if err != nil {
+		return nil, err
+	}
+	validTitle, err := value.NewTitle(props.Title)
+	if err != nil {
+		return nil, err
+	}
+	// sanitize content & add 'target="_blank"' to links
+	preparedContent := value.NewItemContent(props.Content)
+
+	desc := ""
+	// set description to passed item description first
+	if len(props.Description) > 0 {
+		desc = props.Description
+	}
+
+	// if item content is long enough
+	// replace description
+	if len(preparedContent) > 240 {
+		desc = preparedContent[:240] + "..."
+	}
+
+	strippedDesc := value.NewDescription(desc)
+
+	l, _ := value.NewLink(props.Link)
+	ll := []value.Link{}
+
+	for _, href := range props.Links {
+		lnk, _ := value.NewLink(href)
+		if len(lnk) > 0 {
+			ll = append(ll, lnk)
+		}
+	}
+
+	var valImgId value.ID
+	if props.Image != "" && props.Image != uuid.Nil.String() {
+		valImgId, err = value.IdFromString(props.Image)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	slug, err := value.NewSlug(props.Title)
 	if err != nil {
 		return nil, err
 	}
 
 	article := &Article{
-		title:           props.Title,
-		description:     props.Description,
-		content:         props.Content,
-		link:            props.Link,
-		links:           props.Links,
+		title:           validTitle,
+		description:     strippedDesc,
+		content:         preparedContent,
+		link:            l,
+		links:           ll,
 		updated:         props.Updated,
 		updatedParsed:   props.UpdatedParsed,
 		published:       props.Published,
 		publishedParsed: props.PublishedParsed,
 		guid:            props.GUID,
-		authors:         []value.ID{},
-		image:           value.IdFromString(props.Image),
-		annotations:     []value.ID{},
-		categories:      []value.ID{},
-		feed:            value.IdFromString(props.FeedId),
+		authors:         []value.PersonId{},
+		image:           value.ImageId{ID: valImgId},
+		annotations:     []value.AnnotationId{},
+		categories:      []value.CategoryId{},
+		feed:            value.NewsfeedId{ID: valFeedId},
 		slug:            slug,
 	}
 
@@ -73,7 +118,7 @@ func NewArticle(props ArticleProps) (*Article, error) {
 
 func (a *Article) JSON() []byte {
 	type jsonArticle struct {
-		ID              value.ID          `json:"id"`
+		ID              value.ArticleId   `json:"id"`
 		Title           value.Title       `json:"title"`
 		Content         value.ItemContent `json:"content"`
 		Link            value.Link        `json:"link"`
@@ -83,8 +128,8 @@ func (a *Article) JSON() []byte {
 		Published       string            `json:"published"`
 		PublishedParsed time.Time         `json:"publishedParsed"`
 		GUID            string            `json:"guid"`
-		Image           value.ID          `json:"image"`
-		FeedId          value.ID          `json:"feedId"`
+		Image           value.ImageId     `json:"image"`
+		FeedId          value.NewsfeedId  `json:"feedId"`
 		Slug            value.Slug        `json:"slug"`
 		Read            bool              `json:"read"`
 		Saved           bool              `json:"saved"`

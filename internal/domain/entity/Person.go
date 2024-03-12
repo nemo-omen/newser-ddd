@@ -5,7 +5,7 @@ import (
 )
 
 type Person struct {
-	ID    value.ID
+	ID    value.PersonId
 	Name  string
 	Email string
 }

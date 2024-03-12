@@ -5,5 +5,5 @@ import (
 )
 
 type Subscription struct {
-	ID value.ID
+	ID value.SubscriptionId
 }

@@ -5,10 +5,10 @@ import (
 )
 
 type Annotation struct {
-	id      value.ID
+	id      value.AnnotationId
 	title   string
 	content string
-	article value.ID
+	article value.ArticleId
 	// location
 	// created
 	// updated

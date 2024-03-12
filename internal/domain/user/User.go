@@ -8,9 +8,9 @@ import (
 
 type User struct {
 	user          *entity.Person
-	subscriptions []entity.SubscriptionId
-	annotations   []entity.NoteId
-	collections   []entity.CollectionId
+	subscriptions []value.SubscriptionId
+	annotations   []value.AnnotationId
+	collections   []value.CollectionId
 }
 
 func NewUser(email, name string) (*User, error) {
@@ -25,28 +25,28 @@ func NewUser(email, name string) (*User, error) {
 	}
 
 	person := &entity.Person{
-		ID:    value.NewId(),
+		ID:    value.PersonId{ID: value.NewId()},
 		Name:  userName,
 		Email: userEmail,
 	}
 
 	user := User{
 		user:          person,
-		subscriptions: []entity.SubscriptionId{},
-		annotations:   []entity.NoteId{},
-		collections:   []entity.CollectionId{},
+		subscriptions: []value.SubscriptionId{},
+		annotations:   []value.AnnotationId{},
+		collections:   []value.CollectionId{},
 	}
 	return &user, nil
 }
 
 func (u *User) JSON() []byte {
 	type jsonUser struct {
-		ID            value.ID                `json:"id"`
-		Name          value.Name              `json:"name"`
-		Email         value.Email             `json:"email"`
-		Subscriptions []entity.SubscriptionId `json:"subscriptions"`
-		Annotations   []entity.NoteId         `json:"annotations"`
-		Collections   []entity.CollectionId   `json:"collections"`
+		ID            value.PersonId         `json:"id"`
+		Name          value.Name             `json:"name"`
+		Email         value.Email            `json:"email"`
+		Subscriptions []value.SubscriptionId `json:"subscriptions"`
+		Annotations   []value.AnnotationId   `json:"annotations"`
+		Collections   []value.CollectionId   `json:"collections"`
 	}
 	ju := jsonUser{
 		ID:            u.user.ID,

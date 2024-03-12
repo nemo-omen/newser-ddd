@@ -5,9 +5,9 @@ import (
 )
 
 type Collection struct {
-	id    value.ID
-	title value.Title
-	user  value.ID
-	items []value.ID
-	slug  value.Slug
+	id       value.CollectionId
+	title    value.Title
+	user     value.PersonId
+	articles []value.ArticleId
+	slug     value.Slug
 }
