@@ -159,11 +159,11 @@ func (a *Article) String() string {
 	return string(a.JSON())
 }
 
-func (a *Article) Read() {
+func (a *Article) SetRead() {
 	a.read = true
 }
 
-func (a *Article) Unread() {
+func (a *Article) SetUnread() {
 	a.read = false
 }
 
@@ -177,4 +177,68 @@ func (a *Article) Unsave() {
 
 func (a *Article) ID() value.ArticleId {
 	return a.id
+}
+
+func (a *Article) Title() value.Title {
+	return a.title
+}
+
+func (a *Article) Description() value.Description {
+	return a.description
+}
+
+func (a *Article) Content() value.ItemContent {
+	return a.content
+}
+
+func (a *Article) Link() value.Link {
+	return a.link
+}
+
+func (a *Article) Links() []value.Link {
+	return a.links
+}
+
+func (a *Article) Updated() string {
+	return a.updated
+}
+
+func (a *Article) UpdatedParsed() time.Time {
+	return a.updatedParsed
+}
+
+func (a *Article) Published() string {
+	return a.published
+}
+
+func (a *Article) PublishedParsed() time.Time {
+	return a.publishedParsed
+}
+
+func (a *Article) GUID() string {
+	return a.guid
+}
+
+func (a *Article) Authors() []value.PersonId {
+	return a.authors
+}
+
+func (a *Article) Image() value.ImageId {
+	return a.image
+}
+
+func (a *Article) Annotations() []value.AnnotationId {
+	return a.annotations
+}
+
+func (a *Article) Categories() []value.CategoryId {
+	return a.categories
+}
+
+func (a *Article) Feed() value.NewsfeedId {
+	return a.feed
+}
+
+func (a *Article) Slug() value.Slug {
+	return a.slug
 }

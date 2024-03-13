@@ -52,3 +52,19 @@ func (p *Person) JSON() []byte {
 func (p *Person) String() string {
 	return string(p.JSON())
 }
+
+func (p *Person) SetName(n string) {
+	name, err := value.NewName(n)
+	if err != nil {
+		return
+	}
+	p.Name = name
+}
+
+func (p *Person) SetEmail(e string) {
+	email, err := value.NewEmail(e)
+	if err != nil {
+		return
+	}
+	p.Email = email
+}
