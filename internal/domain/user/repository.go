@@ -1,6 +1,10 @@
 package user
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/google/uuid"
+)
 
 var (
 	ErrNotFound   = errors.New("user not found")
@@ -11,9 +15,9 @@ var (
 
 type UserRepository interface {
 	Save(user *User) error
-	FindById(id string) (*User, error)
+	FindById(id uuid.UUID) (*User, error)
 	FindByEmail(email string) (*User, error)
 	FindAll() ([]*User, error)
 	Update(user *User) error
-	Delete(id string) error
+	Delete(id uuid.UUID) error
 }

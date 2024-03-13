@@ -25,6 +25,18 @@ func NewSubscription(props SubscriptionProps) (*Subscription, error) {
 	}, nil
 }
 
+func (s *Subscription) ID() value.SubscriptionId {
+	return s.id
+}
+
+func (s *Subscription) User() value.PersonId {
+	return s.user
+}
+
+func (s *Subscription) Feed() value.NewsfeedId {
+	return s.feed
+}
+
 func (s *Subscription) JSON() []byte {
 	type jsonSubscription struct {
 		ID   value.SubscriptionId `json:"id"`

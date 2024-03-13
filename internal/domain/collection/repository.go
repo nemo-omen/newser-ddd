@@ -1,6 +1,10 @@
 package collection
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/google/uuid"
+)
 
 var (
 	ErrNotFound   = errors.New("collection not found")
@@ -11,10 +15,9 @@ var (
 
 type CollectionRepository interface {
 	Save(collection *Collection) error
-	FindById(id string) (*Collection, error)
+	FindById(id uuid.UUID) (*Collection, error)
 	FindBySlug(slug string) (*Collection, error)
-	FindAll(userId string) ([]*Collection, error)
-	FindAllByUserId(userId string) ([]*Collection, error)
+	FindAllByUserId(userId uuid.UUID) ([]*Collection, error)
 	Update(collection *Collection) error
-	Delete(id string) error
+	Delete(id uuid.UUID) error
 }

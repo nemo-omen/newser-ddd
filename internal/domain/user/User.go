@@ -39,6 +39,18 @@ func NewUser(email, name string) (*User, error) {
 	return &user, nil
 }
 
+func (u *User) ID() value.PersonId {
+	return u.user.ID
+}
+
+func (u *User) Name() value.Name {
+	return u.user.Name
+}
+
+func (u *User) Email() value.Email {
+	return u.user.Email
+}
+
 func (u *User) JSON() []byte {
 	type jsonUser struct {
 		ID            value.PersonId         `json:"id"`

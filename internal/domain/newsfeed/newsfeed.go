@@ -73,6 +73,54 @@ func NewNewsfeed(props NewsfeedProps) (*Newsfeed, error) {
 	return newsfeed, nil
 }
 
+func (n *Newsfeed) Title() value.Title {
+	return n.title
+}
+
+func (n *Newsfeed) SiteUrl() value.Link {
+	return n.siteUrl
+}
+
+func (n *Newsfeed) FeedUrl() value.Link {
+	return n.feedUrl
+}
+
+func (n *Newsfeed) Description() value.Description {
+	return n.description
+}
+
+func (n *Newsfeed) Slug() string {
+	return n.slug
+}
+
+func (n *Newsfeed) Copyright() string {
+	return n.copyright
+}
+
+func (n *Newsfeed) Language() string {
+	return n.language
+}
+
+func (n *Newsfeed) FeedType() string {
+	return n.feedType
+}
+
+func (n *Newsfeed) Image() value.ImageId {
+	return n.image
+}
+
+func (n *Newsfeed) Articles() []value.ArticleId {
+	return n.articles
+}
+
+func (n *Newsfeed) Authors() []value.PersonId {
+	return n.authors
+}
+
+func (n *Newsfeed) Categories() []value.CategoryId {
+	return n.categories
+}
+
 func (n *Newsfeed) JSON() []byte {
 	type newsfeedJson struct {
 		ID          value.NewsfeedId   `json:"id"`
