@@ -1,5 +1,14 @@
 package subscription
 
+import "errors"
+
+var (
+	ErrNotFound   = errors.New("subscription not found")
+	ErrNotSaved   = errors.New("subscription not saved")
+	ErrNotUpdated = errors.New("subscription not updated")
+	ErrNotDeleted = errors.New("subscription not deleted")
+)
+
 type SubscriptionRepository interface {
 	Save(subscription *Subscription) error
 	FindById(id string) (*Subscription, error)
