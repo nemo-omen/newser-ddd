@@ -14,3 +14,17 @@ type Annotation struct {
 	// updated
 	// collection
 }
+
+func NewAnnotation(title string, content string, article value.ArticleId) (*Annotation, error) {
+	validTitle, err := value.NewTitle(title)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Annotation{
+		id:      value.AnnotationId{ID: value.NewId()},
+		title:   validTitle,
+		content: content,
+		article: article,
+	}, nil
+}

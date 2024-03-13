@@ -108,6 +108,10 @@ func (n *Newsfeed) JSON() []byte {
 	return b
 }
 
+func (n *Newsfeed) ID() value.NewsfeedId {
+	return n.id
+}
+
 func (n *Newsfeed) String() string {
 	return string(n.JSON())
 }

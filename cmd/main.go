@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"newser/internal/domain/article"
+	"newser/internal/domain/newsfeed"
 	"newser/internal/domain/user"
 	"newser/internal/domain/value"
 	"time"
@@ -35,5 +36,21 @@ func main() {
 	}
 
 	fmt.Printf("a1: %+v\n", a1)
+
+	n1, err := newsfeed.NewNewsfeed(newsfeed.NewsfeedProps{
+		Title:       "The Title",
+		SiteUrl:     "http://www.example.com",
+		FeedUrl:     "http://www.example.com/feed",
+		Description: "The Description",
+		Language:    "en",
+		FeedType:    "rss",
+	})
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	n1.AddArticle(a1.ID())
+	fmt.Printf("n1: %+v\n", n1)
 
 }

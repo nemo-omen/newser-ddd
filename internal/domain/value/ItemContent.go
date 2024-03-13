@@ -5,6 +5,8 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/microcosm-cc/bluemonday"
+	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 )
 
 type ItemContent = string
@@ -17,26 +19,46 @@ func NewItemContent(content string) ItemContent {
 		return ""
 	}
 
-	// sanitize, allowing
-	// code blocks with language classes
+	ctx := &html.Node{
+		Type:     html.ElementNode,
+		DataAtom: atom.Div,
+		Data:     "div",
+	}
+
 	p := bluemonday.UGCPolicy()
 	p.AllowElements("code")
 	p.AllowAttrs("class").OnElements("code")
-	safe := p.Sanitize(content)
+	p.AllowAttrs("target").OnElements("a")
+
+	ns, err := html.ParseFragment(strings.NewReader(content), ctx)
+	if err != nil {
+		return p.Sanitize(content)
+	}
+
+	var node *html.Node
+	for _, n := range ns {
+		if n.Type == html.ElementNode {
+			node = n
+			break
+		}
+	}
 
 	// add a target attribute to all links
-	doc, err := goquery.NewDocumentFromReader(strings.NewReader(safe))
-	if err != nil {
-		return safe
-	}
+	doc := goquery.NewDocumentFromNode(node)
+
 	doc.Find("a").Each(func(i int, s *goquery.Selection) {
 		s.SetAttr("target", "_blank")
 	})
 
-	// stringify the doc
-	updated, err := doc.Html()
+	// sanitize, allowing
+	// code blocks with language classes
+	safe := p.Sanitize(content)
+
+	// stringify the document
+	h, err := goquery.OuterHtml(doc.Selection)
 	if err != nil {
 		return safe
 	}
-	return updated
+
+	return h
 }

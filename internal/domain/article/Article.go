@@ -58,18 +58,14 @@ func NewArticle(props ArticleProps) (*Article, error) {
 	preparedContent := value.NewItemContent(props.Content)
 
 	desc := ""
-	// set description to passed item description first
-	if len(props.Description) > 0 {
-		desc = props.Description
-	}
-
 	// if item content is long enough
-	// replace description
+	// set it as description
 	if len(preparedContent) > 240 {
-		desc = preparedContent[:240] + "..."
+		desc = value.NewDescription(preparedContent[:240] + "...")
+	} else {
+		// otherwise, just use default description
+		desc = value.NewDescription(props.Description)
 	}
-
-	strippedDesc := value.NewDescription(desc)
 
 	l, _ := value.NewLink(props.Link)
 	ll := []value.Link{}
@@ -95,8 +91,9 @@ func NewArticle(props ArticleProps) (*Article, error) {
 	}
 
 	article := &Article{
+		id:              value.ArticleId{ID: value.NewId()},
 		title:           validTitle,
-		description:     strippedDesc,
+		description:     desc,
 		content:         preparedContent,
 		link:            l,
 		links:           ll,
@@ -120,6 +117,7 @@ func (a *Article) JSON() []byte {
 	type jsonArticle struct {
 		ID              value.ArticleId   `json:"id"`
 		Title           value.Title       `json:"title"`
+		Description     value.Description `json:"description"`
 		Content         value.ItemContent `json:"content"`
 		Link            value.Link        `json:"link"`
 		Links           []value.Link      `json:"links"`
@@ -139,6 +137,7 @@ func (a *Article) JSON() []byte {
 		ID:              a.id,
 		Title:           a.title,
 		Content:         a.content,
+		Description:     a.description,
 		Link:            a.link,
 		Updated:         a.updated,
 		UpdatedParsed:   a.updatedParsed,
@@ -174,4 +173,8 @@ func (a *Article) Save() {
 
 func (a *Article) Unsave() {
 	a.saved = false
+}
+
+func (a *Article) ID() value.ArticleId {
+	return a.id
 }
