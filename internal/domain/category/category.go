@@ -1,4 +1,4 @@
-package entity
+package category
 
 import (
 	"encoding/json"

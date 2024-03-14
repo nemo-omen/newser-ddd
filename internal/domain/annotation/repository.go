@@ -14,7 +14,6 @@ type AnnotationRepository interface {
 	FindById(id string) (*Annotation, error)
 	FindByTitle(title string) (*Annotation, error)
 	FindAll(userId string) ([]*Annotation, error)
-	FindAllByUserId(userId string) ([]*Annotation, error)
 	Update(annotation *Annotation) error
 	Delete(id string) error
 }

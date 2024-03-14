@@ -2,14 +2,18 @@ package memory
 
 import (
 	"newser/internal/domain/article"
+	"newser/internal/domain/category"
+	"newser/internal/domain/value"
+	"slices"
 	"sync"
 
 	"github.com/google/uuid"
 )
 
 type MemoryArticleRepository struct {
-	mu       sync.RWMutex
-	articles map[uuid.UUID]*article.Article
+	mu         sync.RWMutex
+	articles   map[uuid.UUID]*article.Article
+	categories map[uuid.UUID]*category.Category
 }
 
 func NewArticleMemoryRepo() *MemoryArticleRepository {
@@ -72,4 +76,17 @@ func (r *MemoryArticleRepository) FindBySlug(slug string) (*article.Article, err
 		}
 	}
 	return nil, article.ErrNotFound
+}
+
+func (r *MemoryArticleRepository) FindByCategoryId(id value.CategoryId) ([]*article.Article, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	articles := make([]*article.Article, 0, len(r.articles))
+	for _, a := range r.articles {
+		if slices.Contains(a.Categories(), id) {
+			articles = append(articles, a)
+		}
+	}
+	return articles, nil
 }

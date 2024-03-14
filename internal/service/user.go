@@ -2,6 +2,9 @@ package service
 
 import (
 	"errors"
+	"newser/internal/domain/annotation"
+	"newser/internal/domain/collection"
+	"newser/internal/domain/subscription"
 	"newser/internal/domain/user"
 	"newser/internal/domain/value"
 	"newser/internal/infra/repository/memory"
@@ -14,7 +17,10 @@ var (
 type UserConfiguration func(us *UserService) error
 
 type UserService struct {
-	userRepo user.UserRepository
+	userRepo         user.UserRepository
+	collectionRepo   collection.CollectionRepository
+	annotationRepo   annotation.AnnotationRepository
+	subscriptionRepo subscription.SubscriptionRepository
 }
 
 func NewUserService(configs ...UserConfiguration) (*UserService, error) {
@@ -30,17 +36,25 @@ func NewUserService(configs ...UserConfiguration) (*UserService, error) {
 	return service, nil
 }
 
-func WithUserRepository(repo user.UserRepository) UserConfiguration {
+func UserServiceWithUserRepository(repo user.UserRepository) UserConfiguration {
 	return func(us *UserService) error {
 		us.userRepo = repo
 		return nil
 	}
 }
 
-func WithMemoryUserRepository() UserConfiguration {
+func UserServiceWithMemoryUserRepository() UserConfiguration {
 	return func(us *UserService) error {
 		repo := memory.NewUserMemoryRepo()
 		us.userRepo = repo
+		return nil
+	}
+}
+
+func UserServiceWithMemoryCollectionRepository() UserConfiguration {
+	return func(us *UserService) error {
+		repo := memory.NewCollectionMemoryRepo()
+		us.collectionRepo = repo
 		return nil
 	}
 }

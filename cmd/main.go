@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	userService, err := service.NewUserService(service.WithMemoryUserRepository())
+	userService, err := service.NewUserService(service.UserServiceWithMemoryUserRepository())
 	if err != nil {
 		log.Println(err.Error())
 	}

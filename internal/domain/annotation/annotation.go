@@ -10,13 +10,14 @@ type Annotation struct {
 	title   string
 	content string
 	article value.ArticleId
+	user    value.PersonId
 	// location
 	// created
 	// updated
 	// collection
 }
 
-func NewAnnotation(title string, content string, article value.ArticleId) (*Annotation, error) {
+func NewAnnotation(title string, content string, article value.ArticleId, user value.PersonId) (*Annotation, error) {
 	validTitle, err := value.NewTitle(title)
 	if err != nil {
 		return nil, err
@@ -27,6 +28,7 @@ func NewAnnotation(title string, content string, article value.ArticleId) (*Anno
 		title:   validTitle,
 		content: content,
 		article: article,
+		user:    user,
 	}, nil
 }
 
@@ -36,12 +38,14 @@ func (a *Annotation) JSON() []byte {
 		Title   string             `json:"title"`
 		Content string             `json:"content"`
 		Article value.ArticleId    `json:"article"`
+		User    value.PersonId     `json:"user"`
 	}
 	js := jsonAnnotation{
 		ID:      a.id,
 		Title:   a.title,
 		Content: a.content,
 		Article: a.article,
+		User:    a.user,
 	}
 	b, _ := json.MarshalIndent(js, "", "  ")
 	return b
@@ -61,6 +65,10 @@ func (a *Annotation) Content() string {
 
 func (a *Annotation) Article() value.ArticleId {
 	return a.article
+}
+
+func (a *Annotation) User() value.PersonId {
+	return a.user
 }
 
 func (a *Annotation) ID() value.AnnotationId {
